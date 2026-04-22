@@ -1,0 +1,467 @@
+{
+  "holdItems": [
+    {
+      "name": "Black Belt",
+      "desc": "An item to be held by a Pok\u00e9mon. This belt helps with focus and boosts the power of the holder's Fighting-type moves."
+    },
+    {
+      "name": "Black Glasses",
+      "desc": "An item to be held by a Pok\u00e9mon. It's a pair of shady- looking glasses that boost the power of the holder's Dark-type moves."
+    },
+    {
+      "name": "Bright Powder",
+      "desc": "An item to be held by a Pok\u00e9mon. This glittery powder casts a tricky glare that lowers the accuracy of opposing Pok\u00e9mon's moves."
+    },
+    {
+      "name": "Charcoal",
+      "desc": "An item to be held by a Pok\u00e9mon. It's a combustible fuel that boosts the power of the holder's Fire-type moves."
+    },
+    {
+      "name": "Choice Scarf",
+      "desc": "An item to be held by a Pok\u00e9mon. This curious scarf boosts the holder's Speed stat but only allows the use of a single move."
+    },
+    {
+      "name": "Dragon Fang",
+      "desc": "An item to be held by a Pok\u00e9mon. This hard, sharp fang boosts the power of the holder's Dragon-type moves."
+    },
+    {
+      "name": "Fairy Feather",
+      "desc": "An item to be held by a Pok\u00e9mon. This feather, which gleams faintly when hit by light, boosts the power of the holder's Fairy-type moves."
+    },
+    {
+      "name": "Focus Band",
+      "desc": "An item to be held by a Pok\u00e9mon. When the holder is hit with a move that should knock it out, it may be able to endure with 1 HP."
+    },
+    {
+      "name": "Focus Sash",
+      "desc": "An item to be held by a Pok\u00e9mon. If the holder has full HP and it is hit with a move that should knock it out, it will endure with 1 HP\u2014but only once."
+    },
+    {
+      "name": "Hard Stone",
+      "desc": "An item to be held by a Pok\u00e9mon. It's a durable stone that boosts the power of the holder's Rock-type moves."
+    },
+    {
+      "name": "King's Rock",
+      "desc": "An item to be held by a Pok\u00e9mon. It may cause the target to flinch whenever the holder successfully inflicts damage on them with an attack."
+    },
+    {
+      "name": "Leftovers",
+      "desc": "An item to be held by a Pok\u00e9mon. It slowly but steadily restores the holder's HP."
+    },
+    {
+      "name": "Light Ball",
+      "desc": "An item to be held by Pikachu. It's a mysterious orb that boosts Pikachu's Attack and Sp. Atk stats."
+    },
+    {
+      "name": "Magnet",
+      "desc": "An item to be held by a Pok\u00e9mon. It's a powerful magnet that boosts the power of the holder's Electric-type moves."
+    },
+    {
+      "name": "Mental Herb",
+      "desc": "An item to be held by a Pok\u00e9mon. The holder will be able to shake off move-binding effects to move freely\u2014 but only once."
+    },
+    {
+      "name": "Metal Coat",
+      "desc": "An item to be held by a Pok\u00e9mon. It's a special metallic coating that boosts the power of the holder's Steel-type moves."
+    },
+    {
+      "name": "Miracle Seed",
+      "desc": "An item to be held by a Pok\u00e9mon. It's a seed imbued with life force that boosts the power of the holder's Grass-type moves."
+    },
+    {
+      "name": "Mystic Water",
+      "desc": "An item to be held by a Pok\u00e9mon. This teardrop-shaped gem boosts the power of the holder's Water-type moves."
+    },
+    {
+      "name": "Never-Melt Ice",
+      "desc": "An item to be held by a Pok\u00e9mon. It's a heat-repelling piece of ice that boosts the power of the holder's Ice- type moves."
+    },
+    {
+      "name": "Poison Barb",
+      "desc": "An item to be held by a Pok\u00e9mon. This small poisonous barb boosts the power of the holder's Poison-type moves."
+    },
+    {
+      "name": "Quick Claw",
+      "desc": "An item to be held by a Pok\u00e9mon. This light, sharp claw lets the holder occasionally unleash a move faster than it usually would."
+    },
+    {
+      "name": "Scope Lens",
+      "desc": "An item to be held by a Pok\u00e9mon. It's a lens for scoping out weak points. It boosts the holder's critical-hit ratio."
+    },
+    {
+      "name": "Sharp Beak",
+      "desc": "An item to be held by a Pok\u00e9mon. It's a long, sharp beak that boosts the power of the holder's Flying-type moves."
+    },
+    {
+      "name": "Shell Bell",
+      "desc": "An item to be held by a Pok\u00e9mon. The holder restores a little HP to itself every time it inflicts damage with an attack."
+    },
+    {
+      "name": "Silk Scarf",
+      "desc": "An item to be held by a Pok\u00e9mon. It's a sumptuous scarf that boosts the power of the holder's Normal-type moves."
+    },
+    {
+      "name": "Silver Powder",
+      "desc": "An item to be held by a Pok\u00e9mon. It's a shiny silver powder that boosts the power of the holder's Bug-type moves."
+    },
+    {
+      "name": "Soft Sand",
+      "desc": "An item to be held by a Pok\u00e9mon. This loose, silky sand boosts the power of the holder's Ground-type moves."
+    },
+    {
+      "name": "Spell Tag",
+      "desc": "An item to be held by a Pok\u00e9mon. It's a sinister, eerie tag that boosts the power of the holder's Ghost-type moves."
+    },
+    {
+      "name": "Twisted Spoon",
+      "desc": "An item to be held by a Pok\u00e9mon. This spoon is imbued with telekinetic energy and boosts the power of the holder's Psychic-type moves."
+    },
+    {
+      "name": "White Herb",
+      "desc": "An item to be held by a Pok\u00e9mon. It will restore any lowered stat in battle\u2014but only once."
+    }
+  ],
+  "berries": [
+    {
+      "name": "Aspear Berry",
+      "desc": "If a Pok\u00e9mon holds one of these Berries, it will be able to thaw itself after being frozen."
+    },
+    {
+      "name": "Babiri Berry",
+      "desc": "If a Pok\u00e9mon holding this Berry is hit with a supereffective Steel-type move, the power of that move will be weakened."
+    },
+    {
+      "name": "Charti Berry",
+      "desc": "If a Pok\u00e9mon holding this Berry is hit with a supereffective Rock-type move, the power of that move will be weakened."
+    },
+    {
+      "name": "Cheri Berry",
+      "desc": "If a Pok\u00e9mon holds one of these Berries, it will be able to free itself from paralysis."
+    },
+    {
+      "name": "Chesto Berry",
+      "desc": "If a Pok\u00e9mon holds one of these Berries, it will be able to shake off its drowsiness."
+    },
+    {
+      "name": "Chilan Berry",
+      "desc": "If a Pok\u00e9mon holding this Berry is hit with a Normal-type move, the power of that move will be weakened."
+    },
+    {
+      "name": "Chople Berry",
+      "desc": "If a Pok\u00e9mon holding this Berry is hit with a supereffective Fighting-type move, the power of that move will be weakened."
+    },
+    {
+      "name": "Coba Berry",
+      "desc": "If a Pok\u00e9mon holding this Berry is hit with a supereffective Flying-type move, the power of that move will be weakened."
+    },
+    {
+      "name": "Colbur Berry",
+      "desc": "If a Pok\u00e9mon holding this Berry is hit with a supereffective Dark-type move, the power of that move will be weakened."
+    },
+    {
+      "name": "Haban Berry",
+      "desc": "If a Pok\u00e9mon holding this Berry is hit with a supereffective Dragon-type move, the power of that move will be weakened."
+    },
+    {
+      "name": "Kasib Berry",
+      "desc": "If a Pok\u00e9mon holding this Berry is hit with a supereffective Ghost-type move, the power of that move will be weakened."
+    },
+    {
+      "name": "Kebia Berry",
+      "desc": "If a Pok\u00e9mon holding this Berry is hit with a supereffective Poison-type move, the power of that move will be weakened."
+    },
+    {
+      "name": "Leppa Berry",
+      "desc": "If a Pok\u00e9mon holds one of these Berries, it will be able to restore 10 PP to a move."
+    },
+    {
+      "name": "Lum Berry",
+      "desc": "If a Pok\u00e9mon holds one of these Berries, it will be able to cure itself of any status condition it may have."
+    },
+    {
+      "name": "Occa Berry",
+      "desc": "If a Pok\u00e9mon holding this Berry is hit with a supereffective Fire-type move, the power of that move will be weakened."
+    },
+    {
+      "name": "Oran Berry",
+      "desc": "If a Pok\u00e9mon holds one of these Berries, it will be able to restore 10 HP to itself."
+    },
+    {
+      "name": "Passho Berry",
+      "desc": "If a Pok\u00e9mon holding this Berry is hit with a supereffective Water-type move, the power of that move will be weakened."
+    },
+    {
+      "name": "Payapa Berry",
+      "desc": "If a Pok\u00e9mon holding this Berry is hit with a supereffective Psychic-type move, the power of that move will be weakened."
+    },
+    {
+      "name": "Pecha Berry",
+      "desc": "If a Pok\u00e9mon holds one of these Berries, it will be able to lift the effects of being poisoned from itself."
+    },
+    {
+      "name": "Persim Berry",
+      "desc": "If a Pok\u00e9mon holds one of these Berries, it will be able to cure itself of confusion."
+    },
+    {
+      "name": "Rawst Berry",
+      "desc": "If a Pok\u00e9mon holds one of these Berries, it will be able to cure itself of a burn."
+    },
+    {
+      "name": "Rindo Berry",
+      "desc": "If a Pok\u00e9mon holding this Berry is hit with a supereffective Grass-type move, the power of that move will be weakened."
+    },
+    {
+      "name": "Roseli Berry",
+      "desc": "If a Pok\u00e9mon holding this Berry is hit with a supereffective Fairy-type move, the power of that move will be weakened."
+    },
+    {
+      "name": "Shuca Berry",
+      "desc": "If a Pok\u00e9mon holding this Berry is hit with a supereffective Ground-type move, the power of that move will be weakened."
+    },
+    {
+      "name": "Sitrus Berry",
+      "desc": "If a Pok\u00e9mon holds one of these Berries, it will be able to restore a small amount of HP to itself."
+    },
+    {
+      "name": "Tanga Berry",
+      "desc": "If a Pok\u00e9mon holding this Berry is hit with a supereffective Bug-type move, the power of that move will be weakened."
+    },
+    {
+      "name": "Wacan Berry",
+      "desc": "If a Pok\u00e9mon holding this Berry is hit with a supereffective Electric-type move, the power of that move will be weakened."
+    },
+    {
+      "name": "Yache Berry",
+      "desc": "If a Pok\u00e9mon holding this Berry is hit with a supereffective Ice-type move, the power of that move will be weakened."
+    }
+  ],
+  "megaStones": [
+    {
+      "name": "Abomasnowite",
+      "pokemon": "Abomasnow"
+    },
+    {
+      "name": "Absolite",
+      "pokemon": "Absol"
+    },
+    {
+      "name": "Aerodactylite",
+      "pokemon": "Aerodactyl"
+    },
+    {
+      "name": "Aggronite",
+      "pokemon": "Aggron"
+    },
+    {
+      "name": "Alakazamite",
+      "pokemon": "Alakazam"
+    },
+    {
+      "name": "Ampharosite",
+      "pokemon": "Ampharos"
+    },
+    {
+      "name": "Banetteite",
+      "pokemon": "Banette"
+    },
+    {
+      "name": "Beedrillite",
+      "pokemon": "Beedrill"
+    },
+    {
+      "name": "Blastoiseite",
+      "pokemon": "Blastoise"
+    },
+    {
+      "name": "Cameruptite",
+      "pokemon": "Camerupt"
+    },
+    {
+      "name": "Chandelureite",
+      "pokemon": "Chandelure"
+    },
+    {
+      "name": "Charizardite X",
+      "pokemon": "Charizard"
+    },
+    {
+      "name": "Charizardite Y",
+      "pokemon": "Charizard"
+    },
+    {
+      "name": "Chesnaughtite",
+      "pokemon": "Chesnaught"
+    },
+    {
+      "name": "Clefableite",
+      "pokemon": "Clefable"
+    },
+    {
+      "name": "Crabominableite",
+      "pokemon": "Crabominable"
+    },
+    {
+      "name": "Delphoxite",
+      "pokemon": "Delphox"
+    },
+    {
+      "name": "Dragoniteite",
+      "pokemon": "Dragonite"
+    },
+    {
+      "name": "Drampaite",
+      "pokemon": "Drampa"
+    },
+    {
+      "name": "Emboarite",
+      "pokemon": "Emboar"
+    },
+    {
+      "name": "Excadrillite",
+      "pokemon": "Excadrill"
+    },
+    {
+      "name": "Feraligatrite",
+      "pokemon": "Feraligatr"
+    },
+    {
+      "name": "Froslassite",
+      "pokemon": "Froslass"
+    },
+    {
+      "name": "Galladeite",
+      "pokemon": "Gallade"
+    },
+    {
+      "name": "Garchompite",
+      "pokemon": "Garchomp"
+    },
+    {
+      "name": "Gardevoirite",
+      "pokemon": "Gardevoir"
+    },
+    {
+      "name": "Gengarite",
+      "pokemon": "Gengar"
+    },
+    {
+      "name": "Glalieite",
+      "pokemon": "Glalie"
+    },
+    {
+      "name": "Glimmoraite",
+      "pokemon": "Glimmora"
+    },
+    {
+      "name": "Golurkite",
+      "pokemon": "Golurk"
+    },
+    {
+      "name": "Greninjaite",
+      "pokemon": "Greninja"
+    },
+    {
+      "name": "Gyaradosite",
+      "pokemon": "Gyarados"
+    },
+    {
+      "name": "Hawluchaite",
+      "pokemon": "Hawlucha"
+    },
+    {
+      "name": "Heracrossite",
+      "pokemon": "Heracross"
+    },
+    {
+      "name": "Houndoomite",
+      "pokemon": "Houndoom"
+    },
+    {
+      "name": "Kangaskhanite",
+      "pokemon": "Kangaskhan"
+    },
+    {
+      "name": "Lopunnyite",
+      "pokemon": "Lopunny"
+    },
+    {
+      "name": "Lucarioite",
+      "pokemon": "Lucario"
+    },
+    {
+      "name": "Manectricite",
+      "pokemon": "Manectric"
+    },
+    {
+      "name": "Medichamite",
+      "pokemon": "Medicham"
+    },
+    {
+      "name": "Meganiumite",
+      "pokemon": "Meganium"
+    },
+    {
+      "name": "Pidgeotite",
+      "pokemon": "Pidgeot"
+    },
+    {
+      "name": "Pinsirite",
+      "pokemon": "Pinsir"
+    },
+    {
+      "name": "Sableyeite",
+      "pokemon": "Sableye"
+    },
+    {
+      "name": "Scizorite",
+      "pokemon": "Scizor"
+    },
+    {
+      "name": "Scovillainite",
+      "pokemon": "Scovillain"
+    },
+    {
+      "name": "Sharpedoite",
+      "pokemon": "Sharpedo"
+    },
+    {
+      "name": "Skarmoryite",
+      "pokemon": "Skarmory"
+    },
+    {
+      "name": "Slowbroite",
+      "pokemon": "Slowbro"
+    },
+    {
+      "name": "Starmieite",
+      "pokemon": "Starmie"
+    },
+    {
+      "name": "Tyranitarite",
+      "pokemon": "Tyranitar"
+    },
+    {
+      "name": "Venusaurite",
+      "pokemon": "Venusaur"
+    },
+    {
+      "name": "Victreebelite",
+      "pokemon": "Victreebel"
+    },
+    {
+      "name": "Altariaite",
+      "pokemon": "Altaria",
+      "desc": "Allows Altaria to Mega Evolve."
+    },
+    {
+      "name": "Floettite",
+      "pokemon": "Floette",
+      "desc": "Allows Floette to Mega Evolve."
+    },
+    {
+      "name": "Meowsticite",
+      "pokemon": "Meowstic (Male)",
+      "desc": "Allows Meowstic (Male) to Mega Evolve."
+    }
+  ]
+}

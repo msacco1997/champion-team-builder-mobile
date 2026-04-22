@@ -1,0 +1,1 @@
+const { contextBridge, ipcRenderer } = require('electron'); contextBridge.exposeInMainWorld('api', { store: { get: k => ipcRenderer.invoke('store:get', k), set: (k,v) => ipcRenderer.invoke('store:set', k, v), delete: k => ipcRenderer.invoke('store:delete', k) } });
