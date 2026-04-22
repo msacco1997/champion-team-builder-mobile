@@ -1,6 +1,8 @@
 {
   "name": "champions-teambuilder",
   "version": "1.5.0",
+  "description": "Pokémon Champions Team Builder and Editor",
+  "author": "Rukendark",
   "main": "src/main.js",
   "scripts": {
     "start": "electron .",
@@ -14,7 +16,8 @@
     "appId": "com.champions.teambuilder",
     "productName": "Champions TeamBuilder",
     "directories": {
-      "output": "dist"
+      "output": "dist",
+      "buildResources": "build"
     },
     "files": [
       "src/**/*",
@@ -26,13 +29,13 @@
       "target": [
         "nsis"
       ],
-      "icon": "assets/icon.ico"
+      "icon": "build/icon.ico"
     },
     "mac": {
       "target": [
         "dmg"
       ],
-      "icon": "assets/icon.icns",
+      "icon": "build/icon.icns",
       "category": "public.app-category.games"
     },
     "linux": {
@@ -40,8 +43,12 @@
         "AppImage",
         "deb"
       ],
-      "icon": "assets/icon.png",
+      "icon": "build/icon.png",
       "category": "Game"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true
     }
   },
   "devDependencies": {
