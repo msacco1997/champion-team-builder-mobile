@@ -464,6 +464,18 @@ function pctToColor(pct) {
 
 window.addEventListener('DOMContentLoaded', init);
 
+
+window.updateMove = async (moveIdx, choiceIdx, val) => {
+  const s = getSlot();
+  if(!s) return;
+
+  if (!s.moves) s.moves = [['',''],['',''],['',''],['','']];
+  s.moves[moveIdx][choiceIdx] = val;
+
+  // Also we should check if they selected a move and then immediately save
+  persist();
+};
+
 const TYPE_CHART = {
   Normal: { weak: ['Fighting'], resist: [], immune: ['Ghost'] },
   Fire: { weak: ['Water', 'Ground', 'Rock'], resist: ['Fire', 'Grass', 'Ice', 'Bug', 'Steel', 'Fairy'], immune: [] },
