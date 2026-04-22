@@ -1,47 +1,51 @@
 {
-  "name": "champions-team-builder",
-  "productName": "Champions Team Builder",
-  "version": "1.0.0",
-  "description": "Pokémon Champions Team Builder and Editor",
+  "name": "champions-teambuilder",
+  "version": "1.5.0",
   "main": "src/main.js",
   "scripts": {
     "start": "electron .",
-    "build:all": "electron-builder -mwl",
+    "dev": "electron . --dev",
     "build:win": "electron-builder --win",
     "build:mac": "electron-builder --mac",
-    "build:linux": "electron-builder --linux"
+    "build:linux": "electron-builder --linux",
+    "build:all": "electron-builder --win --mac --linux"
   },
   "build": {
-    "appId": "com.championsteambuilder.app",
+    "appId": "com.champions.teambuilder",
+    "productName": "Champions TeamBuilder",
     "directories": {
-      "buildResources": "build"
+      "output": "dist"
     },
+    "files": [
+      "src/**/*",
+      "assets/**/*",
+      "node_modules/**/*",
+      "package.json"
+    ],
     "win": {
-      "target": "nsis",
-      "icon": "build/icon.ico"
+      "target": [
+        "nsis"
+      ],
+      "icon": "assets/icon.ico"
     },
     "mac": {
-      "target": "dmg",
-      "icon": "build/icon.icns",
+      "target": [
+        "dmg"
+      ],
+      "icon": "assets/icon.icns",
       "category": "public.app-category.games"
     },
     "linux": {
-      "target": "AppImage",
-      "icon": "build/icon.png",
+      "target": [
+        "AppImage",
+        "deb"
+      ],
+      "icon": "assets/icon.png",
       "category": "Game"
-    },
-    "nsis": {
-      "oneClick": false,
-      "allowToChangeInstallationDirectory": true
     }
   },
-  "author": "Rukendark",
-  "license": "MIT",
-  "dependencies": {
-    "electron-store": "^8.2.0"
-  },
   "devDependencies": {
-    "electron": "^28.2.0",
-    "electron-builder": "^24.9.1"
+    "electron": "^29.0.0",
+    "electron-builder": "^24.0.0"
   }
 }
