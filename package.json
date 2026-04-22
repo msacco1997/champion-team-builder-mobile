@@ -37,6 +37,9 @@
   },
   "author": "Rukendark",
   "license": "MIT",
+  "dependencies": {
+    "electron-store": "^8.2.0"
+  },
   "devDependencies": {
     "electron": "^28.2.0",
     "electron-builder": "^24.9.1"
