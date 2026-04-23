@@ -30,6 +30,56 @@ const getActiveForm = () => {
 };
 
 function wireEvents() {
+  
+  // Export Logic
+  const btnExport = document.getElementById('btn-export');
+  if(btnExport) {
+    btnExport.onclick = () => {
+      if(!state.selTeamId) return alert('Seleziona un team prima di esportare!');
+      const team = state.teams.find(t => t.id === state.selTeamId);
+      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(team, null, 2));
+      const downloadAnchorNode = document.createElement('a');
+      downloadAnchorNode.setAttribute("href", dataStr);
+      downloadAnchorNode.setAttribute("download", (team.name || "team") + "_export.json");
+      document.body.appendChild(downloadAnchorNode);
+      downloadAnchorNode.click();
+      downloadAnchorNode.remove();
+    };
+  }
+
+  // Import Logic
+  const btnImport = document.getElementById('btn-import');
+  const fileImport = document.getElementById('file-import');
+  if(btnImport && fileImport) {
+    btnImport.onclick = () => fileImport.click();
+    fileImport.onchange = (e) => {
+      const file = e.target.files[0];
+      if(!file) return;
+      const reader = new FileReader();
+      reader.onload = async (ev) => {
+        try {
+          const importedTeam = JSON.parse(ev.target.result);
+          // Very basic validation
+          if(!importedTeam.id || !importedTeam.name || !Array.isArray(importedTeam.slots)) {
+            return alert('File team non valido!');
+          }
+          // Generate a new unique ID to avoid conflicts if importing the same team twice
+          importedTeam.id = Date.now().toString(); 
+          state.teams.push(importedTeam);
+          state.selTeamId = importedTeam.id;
+          state.selSlotIdx = 0;
+          await persist();
+          renderAll();
+          alert('Team importato con successo!');
+        } catch(err) {
+          alert('Errore durante la lettura del file JSON!');
+        }
+        fileImport.value = ''; // Reset input
+      };
+      reader.readAsText(file);
+    };
+  }
+
   $('#btn-new').onclick = () => $('#modal-backdrop').classList.remove('hidden');
   $('#modal-cancel').onclick = () => $('#modal-backdrop').classList.add('hidden');
   $('#modal-confirm').onclick = async () => {
@@ -40,10 +90,32 @@ function wireEvents() {
   };
   $('#btn-delete').onclick = async () => {
     if(!state.selTeamId) return;
+    document.getElementById('delete-modal-backdrop').style.display = 'flex';
+  };
+
+  const deleteModalEl = document.createElement('div');
+  deleteModalEl.id = 'delete-modal-backdrop';
+  deleteModalEl.style.cssText = 'position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.7); display:flex; align-items:center; justify-content:center; z-index:9999; display:none;';
+  deleteModalEl.innerHTML = `
+    <div style="background:#1a1f2e; border:1px solid #e03e3e; border-radius:12px; padding:32px 40px; min-width:360px; text-align:center; box-shadow: 0 8px 32px rgba(0,0,0,0.6);">
+      <div style="font-size:28px; margin-bottom:12px;">🗑️</div>
+      <div style="font-size:18px; font-weight:bold; color:#fff; margin-bottom:8px;">Delete Team?</div>
+      <div style="color:#aaa; margin-bottom:28px; font-size:14px;">This action is permanent and cannot be undone.</div>
+      <div style="display:flex; gap:12px; justify-content:center;">
+        <button id="delete-modal-cancel" style="padding:10px 28px; border-radius:8px; border:1px solid #555; background:#2a2f3e; color:#ccc; cursor:pointer; font-size:14px; font-weight:bold;">Cancel</button>
+        <button id="delete-modal-confirm" style="padding:10px 28px; border-radius:8px; border:none; background:#e03e3e; color:#fff; cursor:pointer; font-size:14px; font-weight:bold;">Confirm Delete</button>
+      </div>
+    </div>
+  `;
+  document.body.appendChild(deleteModalEl);
+  document.getElementById('delete-modal-cancel').onclick = () => { deleteModalEl.style.display = 'none'; };
+  document.getElementById('delete-modal-confirm').onclick = async () => {
+    deleteModalEl.style.display = 'none';
     state.teams = state.teams.filter(t => t.id !== state.selTeamId);
     state.selTeamId = state.teams[0]?.id || null; state.selSlotIdx = 0;
     await persist(); renderAll();
   };
+
   $('#btn-save').onclick = async () => { await persist(); $('#team-status').textContent='Saved!'; setTimeout(()=>$('#team-status').textContent='Ready',1000); };
   $('#team-select').onchange = e => { state.selTeamId = e.target.value; state.selSlotIdx = 0; renderAll(); };
   $('#mega-toggle').onclick = async () => {
@@ -113,7 +185,7 @@ function renderAll() {
       else if (isMega && n.includes('mewtwo') && n.includes('y')) n = 'mewtwo-megay';
       else if (isMega && !n.includes('-hero') && !n.includes('-blade')) n = n + '-mega';
 
-      return `https://play.pokemonshowdown.com/sprites/dex/${n}.png`;
+      return `../assets/sprites/${n}.gif`;
     };
 
     if (s.pokemon) {

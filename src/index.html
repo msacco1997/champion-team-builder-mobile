@@ -5,10 +5,17 @@
     <div class="card-header">
       <h2>Teams</h2><span class="status-msg" id="team-status">Ready</span>
     </div>
-    <div class="actions">
-      <button id="btn-new">Create New</button>
-      <button id="btn-delete" class="danger">Delete</button>
-      <button id="btn-save" class="primary">Save</button>
+    <div class="actions" style="display: flex; flex-direction: column; gap: 8px;">
+      <div style="display: flex; gap: 8px; width: 100%;">
+        <button id="btn-new" style="flex: 1;">Create New</button>
+        <button id="btn-save" class="primary" style="flex: 1;">Save</button>
+      </div>
+      <div style="display: flex; gap: 8px; width: 100%;">
+        <button id="btn-import" style="flex: 1; background:#2ecc71; color:white; border:none; padding:8px; border-radius:4px; cursor:pointer; font-weight:bold;">Import</button>
+        <button id="btn-export" style="flex: 1; background:#3498db; color:white; border:none; padding:8px; border-radius:4px; cursor:pointer; font-weight:bold;">Export</button>
+        <button id="btn-delete" class="danger" style="flex: 1;">Delete</button>
+      </div>
+      <input type="file" id="file-import" accept=".json" style="display:none;">
     </div>
     <select id="team-select" size="8" class="team-list"></select>
     <div class="card-header" style="margin-top:20px;">
