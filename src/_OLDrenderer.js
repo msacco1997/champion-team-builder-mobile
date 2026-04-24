@@ -341,16 +341,11 @@ function renderSetup() {
       const dexUrl = `./assets/sprites/${aniUrl.split('/').pop().replace('.gif','.png')}`;
 
       imgBox.innerHTML = `
-        <div style="display:flex; flex-direction:column; align-items:center; justify-content:space-between; width:100%; height:100%; text-align:center;">
-          <div style="flex:1; display:flex; align-items:center; justify-content:center; width:100%; padding:20px;">
-             <img src="${aniUrl}" style="max-width:90%; max-height:140px; image-rendering:pixelated; object-fit:contain; filter:drop-shadow(2px 4px 12px rgba(0,0,0,0.7)); transform:scale(1.15);" onerror="this.onerror=null;this.src='${dexUrl}'" />
-          </div>
-          <div style="width:100%; padding:20px 10px; margin-top:auto; position:relative;">
-            <div style="position:absolute; bottom:0; left:0; right:0; top:-20px; background:linear-gradient(to bottom, transparent, #080c13 30%); pointer-events:none;"></div>
-            <div style="position:relative; z-index:1;">
-              <div style="font-weight:800; font-size:18px; line-height:1.2; margin-bottom:8px; letter-spacing:0.02em;">${displayName}</div>
-              <div style="display:flex; gap:6px; flex-wrap:wrap; justify-content:center;">${tcs}</div>
-            </div>
+        <div style="display:flex; flex-direction:column; align-items:center; justify-content:center; width:100%; height:100%; padding:16px 8px 0; text-align:center;">
+          <img src="${aniUrl}" style="max-width:92%; max-height:180px; flex:1; object-fit:contain; filter: drop-shadow(2px 4px 12px rgba(0,0,0,0.7));" onerror="this.onerror=null;this.src='${dexUrl}'" />
+          <div style="width:100%; background:linear-gradient(to top, #080c13 80%, transparent); padding:14px 10px 10px; margin-top:auto;">
+            <div style="font-weight:800; font-size:17px; line-height:1.2; margin-bottom:8px;">${displayName}</div>
+            <div style="display:flex; gap:6px; flex-wrap:wrap; justify-content:center;">${tcs}</div>
           </div>
         </div>`;
     }
