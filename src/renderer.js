@@ -13,13 +13,13 @@ async function init() {
   ]);
   state.data = { pokemon, items, natures, abilities, moves };
   wireEvents();
-  const saved = await window.api.store.get('teams');
+  const saved = JSON.parse(localStorage.getItem('teams') || '[]');
   state.teams = Array.isArray(saved) ? saved : [];
   if (state.teams.length) state.selTeamId = state.teams[0].id;
   renderAll();
 }
 
-async function persist() { await window.api.store.set('teams', state.teams); }
+async function persist() { await localStorage.setItem('teams', JSON.stringify(state.teams)); }
 const getTeam = () => state.teams.find(t => t.id === state.selTeamId);
 const getSlot = () => { const t = getTeam(); return t ? t.slots[state.selSlotIdx] : null; };
 const getPokemon = () => state.data.pokemon.find(p => p.name === getSlot()?.pokemon);
