@@ -185,7 +185,7 @@ function renderAll() {
       else if (isMega && n.includes('mewtwo') && n.includes('y')) n = 'mewtwo-megay';
       else if (isMega && !n.includes('-hero') && !n.includes('-blade')) n = n + '-mega';
 
-      return `../assets/sprites/${n}.gif`;
+      return `src/assets/sprites/${n}.gif`;
     };
 
     if (s.pokemon) {
