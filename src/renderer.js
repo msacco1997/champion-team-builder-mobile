@@ -186,7 +186,7 @@ function renderAll() {
       else if (isMega && !n.includes('-hero') && !n.includes('-blade')) n = n + '-mega';
 
       return {
-        local: `../assets/sprites/${n}.gif`,
+        local: `./src/assets/sprites/${n}.gif`,
         showdown: `https://play.pokemonshowdown.com/sprites/gen5/${n}.png`
       };
     };
