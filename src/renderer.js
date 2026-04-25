@@ -9,7 +9,7 @@ async function loadJson(path) { const r = await fetch(path); return r.json(); }
 
 async function init() {
   const [pokemon, items, natures, abilities, moves] = await Promise.all([
-    loadJson('./data/pokemon.json'), loadJson('./data/items.json'), loadJson('./data/natures.json'), loadJson('./data/abilities.json'), loadJson('./data/moves.json')
+    loadJson('src/data/pokemon.json'), loadJson('src/data/items.json'), loadJson('src/data/natures.json'), loadJson('src/data/abilities.json'), loadJson('src/data/moves.json')
   ]);
   state.data = { pokemon, items, natures, abilities, moves };
   wireEvents();
@@ -186,7 +186,7 @@ function renderAll() {
       else if (isMega && !n.includes('-hero') && !n.includes('-blade')) n = n + '-mega';
 
       return {
-        local: `./src/assets/sprites/${n}.gif`,
+        local: `src/assets/sprites/${n}.gif`,
         showdown: `https://play.pokemonshowdown.com/sprites/gen5/${n}.png`
       };
     };
