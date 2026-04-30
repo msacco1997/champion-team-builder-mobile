@@ -1,10 +1,10 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Champions TeamBuilder</title><link rel="stylesheet" href="src/styles/app.css">  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Champions TeamBuilder</title><link rel="stylesheet" href="./styles/app.css">  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
 <div class="app-shell">
   <aside class="sidebar card">
     <div class="card-header">
-      <h2>Teams</h2><span class="status-msg" id="team-status">Ready</span>
+      <div style="display:flex; justify-content:space-between; align-items:center; width:100%;"><h2>Teams</h2><button id="auth-status" class="btn" style="font-size:12px; padding:4px 8px; border-radius:4px; height:auto;">Login Cloud</button></div><span class="status-msg" id="team-status">Ready</span>
     </div>
     <div class="actions" style="display: flex; flex-direction: column; gap: 8px;">
       <div style="display: flex; gap: 8px; width: 100%;">
@@ -93,7 +93,7 @@
     <div class="modal-actions"><button id="modal-cancel">Cancel</button><button id="modal-confirm" class="primary">Confirm</button></div>
   </div>
 </div>
-<script src="src/renderer.js"></script>
+<script src="./renderer.js"></script>
 
 <div id="modal-auth" class="modal-backdrop hidden">
   <div class="modal-content card" style="max-width: 400px; text-align: center;">

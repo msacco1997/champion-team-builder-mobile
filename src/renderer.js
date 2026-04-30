@@ -1,3 +1,40 @@
+
+const supabaseUrl = 'INSERISCI_QUI_IL_TUO_URL_SUPABASE';
+const supabaseKey = 'INSERISCI_QUI_LA_TUA_ANON_KEY';
+const supabase = window.supabase ? window.supabase.createClient(supabaseUrl, supabaseKey) : null;
+let currentUser = null;
+
+function updateAuthUI() {
+  const btn = document.getElementById('auth-status');
+  if(btn) {
+    btn.textContent = currentUser ? 'Logout' : 'Login Cloud';
+    btn.style.color = currentUser ? '#e74c3c' : '#4d8fe7';
+    btn.style.background = currentUser ? 'rgba(231,76,60,0.1)' : 'rgba(77,143,231,0.1)';
+  }
+}
+
+async function loadTeams() {
+  if (currentUser && supabase) {
+    const { data, error } = await supabase.from('teams').select('id, team_data').eq('user_id', currentUser.id).maybeSingle();
+    if (data && data.team_data) {
+      state.teams = data.team_data;
+      state.cloudRecordId = data.id; 
+    } else {
+      state.teams = [];
+      state.cloudRecordId = null;
+    }
+  } else {
+    const saved = JSON.parse(localStorage.getItem('teams') || '[]');
+    state.teams = Array.isArray(saved) ? saved : [];
+  }
+  if (state.teams.length > 0) {
+     state.selTeamId = state.teams[0].id;
+  } else {
+     state.selTeamId = null;
+  }
+  renderAll();
+}
+
 const TYPE_COLORS = { Normal:'#A8A77A', Fire:'#EE8130', Water:'#6390F0', Electric:'#F7D02C', Grass:'#7AC74C', Ice:'#96D9D6', Fighting:'#C22E28', Poison:'#A33EA1', Ground:'#E2BF65', Flying:'#A98FF3', Psychic:'#F95587', Bug:'#A6B91A', Rock:'#B6A136', Ghost:'#735797', Dragon:'#6F35FC', Dark:'#705746', Steel:'#B7B7CE', Fairy:'#D685AD' };
 const STAT_ORDER = ['HP','ATK','DEF','SpATK','SpDEF','SPE'];
 const MAX_TOTAL_SP = 66;
@@ -13,13 +50,26 @@ async function init() {
   ]);
   state.data = { pokemon, items, natures, abilities, moves };
   wireEvents();
-  const saved = JSON.parse(localStorage.getItem('teams') || '[]');
-  state.teams = Array.isArray(saved) ? saved : [];
-  if (state.teams.length) state.selTeamId = state.teams[0].id;
-  renderAll();
+
+  if(supabase) {
+    const { data: { session } } = await supabase.auth.getSession();
+    currentUser = session?.user || null;
+  }
+  updateAuthUI();
+  await loadTeams();
 }
 
-async function persist() { await localStorage.setItem('teams', JSON.stringify(state.teams)); }
+async function persist() {
+  localStorage.setItem('teams', JSON.stringify(state.teams));
+  if (currentUser && supabase) {
+    if (state.cloudRecordId) {
+      await supabase.from('teams').update({ team_data: state.teams }).eq('id', state.cloudRecordId);
+    } else {
+      const { data, error } = await supabase.from('teams').insert({ user_id: currentUser.id, team_data: state.teams }).select().single();
+      if (data) state.cloudRecordId = data.id;
+    }
+  }
+}
 const getTeam = () => state.teams.find(t => t.id === state.selTeamId);
 const getSlot = () => { const t = getTeam(); return t ? t.slots[state.selSlotIdx] : null; };
 const getPokemon = () => state.data.pokemon.find(p => p.name === getSlot()?.pokemon);
@@ -29,48 +79,14 @@ const getActiveForm = () => {
   return p;
 };
 
-
-const supabaseUrl = 'https://zwojzzrlssehyvcykkbw.supabase.co';
-const supabaseKey = 'sb_publishable_s6SMB4WYqzHIoH8reG8_Zg_DWJ_x31Y';
-const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
-let currentUser = null;
-
-function updateAuthUI() {
-  const btn = $('#auth-status');
-  if(btn) {
-    btn.textContent = currentUser ? 'Logout' : 'Login Cloud';
-    btn.style.color = currentUser ? '#e74c3c' : '#4d8fe7';
-    btn.style.background = currentUser ? 'rgba(231,76,60,0.1)' : 'rgba(77,143,231,0.1)';
-  }
-}
-
-async function loadTeams() {
-  if (currentUser) {
-    const { data, error } = await supabase.from('teams').select('id, team_data').eq('user_id', currentUser.id).maybeSingle();
-    if (data && data.team_data) {
-      state.teams = data.team_data;
-      // Memorizziamo il record id per gli update futuri
-      state.cloudRecordId = data.id; 
-    } else {
-      state.teams = [];
-      state.cloudRecordId = null;
-    }
-  } else {
-    const saved = JSON.parse(localStorage.getItem('teams') || '[]');
-    state.teams = Array.isArray(saved) ? saved : [];
-  }
-  if (state.teams.length) state.selTeamId = state.teams[0].id;
-  renderAll();
-}
-
-
 function wireEvents() {
 
-  // Auth Modal Events
-  const authModal = $('#modal-auth');
-  if ($('#auth-status')) {
-    $('#auth-status').onclick = async () => {
-      if (currentUser) {
+  // Auth Events
+  const authModal = document.getElementById('modal-auth');
+  const btnAuth = document.getElementById('auth-status');
+  if (btnAuth) {
+    btnAuth.onclick = async () => {
+      if (currentUser && supabase) {
         if(confirm('Vuoi eseguire il Logout? Tornerai ai tuoi team locali.')) {
           await supabase.auth.signOut();
           currentUser = null;
@@ -78,17 +94,20 @@ function wireEvents() {
           await loadTeams();
         }
       } else {
-        authModal.classList.remove('hidden');
+        if(authModal) authModal.classList.remove('hidden');
       }
     };
   }
 
-  if ($('#btn-auth-cancel')) $('#btn-auth-cancel').onclick = () => authModal.classList.add('hidden');
+  if (document.getElementById('btn-auth-cancel')) {
+    document.getElementById('btn-auth-cancel').onclick = () => authModal.classList.add('hidden');
+  }
 
-  if ($('#btn-login')) {
-    $('#btn-login').onclick = async () => {
-      const email = $('#auth-email').value.trim();
-      const password = $('#auth-password').value.trim();
+  if (document.getElementById('btn-login')) {
+    document.getElementById('btn-login').onclick = async () => {
+      if(!supabase) return alert("Supabase non configurato");
+      const email = document.getElementById('auth-email').value.trim();
+      const password = document.getElementById('auth-password').value.trim();
       if(!email || !password) return alert('Inserisci email e password');
       const { data, error } = await supabase.auth.signInWithPassword({ email, password });
       if(error) return alert('Errore: ' + error.message);
@@ -100,17 +119,17 @@ function wireEvents() {
     };
   }
 
-  if ($('#btn-register')) {
-    $('#btn-register').onclick = async () => {
-      const email = $('#auth-email').value.trim();
-      const password = $('#auth-password').value.trim();
+  if (document.getElementById('btn-register')) {
+    document.getElementById('btn-register').onclick = async () => {
+      if(!supabase) return alert("Supabase non configurato");
+      const email = document.getElementById('auth-email').value.trim();
+      const password = document.getElementById('auth-password').value.trim();
       if(!email || !password) return alert('Inserisci email e password');
       const { data, error } = await supabase.auth.signUp({ email, password });
       if(error) return alert('Errore: ' + error.message);
       alert('Registrazione completata! Ora puoi fare il Login.');
     };
   }
-
   
   // Export Logic
   const btnExport = document.getElementById('btn-export');
