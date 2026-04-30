@@ -1,8 +1,8 @@
 
-const supabaseUrl = 'https://zwojzzrlssehyvcykkbw.supabase.co';
-const supabaseKey = 'sb_publishable_s6SMB4WYqzHIoH8reG8_Zg_DWJ_x31Y';
-const supabase = window.supabase ? window.supabase.createClient(supabaseUrl, supabaseKey) : null;
-let currentUser = null;
+var supabaseUrl = 'https://zwojzzrlssehyvcykkbw.supabase.co';
+var supabaseKey = 'sb_publishable_s6SMB4WYqzHIoH8reG8_Zg_DWJ_x31Y';
+var supabase = window.supabase ? window.supabase.createClient(supabaseUrl, supabaseKey) : null;
+var currentUser = null;
 
 function updateAuthUI() {
   const btn = document.getElementById('auth-status');
