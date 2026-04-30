@@ -883,4 +883,4 @@ function renderDefensiveProfile() {
 }
 
 
-document.addEventListener('DOMContentLoaded', init);
+init();
