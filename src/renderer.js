@@ -1,6 +1,6 @@
 
-const supabaseUrl = 'INSERISCI_QUI_IL_TUO_URL_SUPABASE';
-const supabaseKey = 'INSERISCI_QUI_LA_TUA_ANON_KEY';
+const supabaseUrl = 'https://zwojzzrlssehyvcykkbw.supabase.co';
+const supabaseKey = 'sb_publishable_s6SMB4WYqzHIoH8reG8_Zg_DWJ_x31Y';
 const supabase = window.supabase ? window.supabase.createClient(supabaseUrl, supabaseKey) : null;
 let currentUser = null;
 
