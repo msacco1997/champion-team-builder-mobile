@@ -89,3 +89,14 @@ input[type=number] {
 .stat-up::after { content: "▲"; font-size: 12px; margin-left: 4px; }
 .stat-down { color: #f87171 !important; }
 .stat-down::after { content: "▼"; font-size: 12px; margin-left: 4px; }
+
+/* Fix per far stare i popup sempre sopra a tutto il resto */
+.modal-backdrop, 
+#modal-auth {
+  z-index: 9999 !important;
+}
+
+/* Assicuriamoci che il pannello dello sprite non faccia scherzi */
+.sprite-panel {
+  z-index: 1;
+}
