@@ -880,3 +880,6 @@ function renderDefensiveProfile() {
   html += `</div>`;
   container.innerHTML = html;
 }
+
+
+document.addEventListener('DOMContentLoaded', init);
