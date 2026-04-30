@@ -1,5 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Champions TeamBuilder</title><link rel="stylesheet" href="src/styles/app.css">  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-</head>
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Champions TeamBuilder</title><link rel="stylesheet" href="src/styles/app.css"></head>
 <body>
 <div class="app-shell">
   <aside class="sidebar card">
@@ -94,21 +93,4 @@
   </div>
 </div>
 <script src="src/renderer.js"></script>
-
-<div id="modal-auth" class="modal-backdrop hidden">
-  <div class="modal-content card" style="max-width: 400px; text-align: center;">
-    <h2 style="margin-bottom: 16px;">Accesso Cloud</h2>
-    <p style="font-size: 14px; color: #888; margin-bottom: 24px;">
-      Accedi per salvare i team sul cloud, o clicca fuori per continuare come Guest (salvataggio locale).
-    </p>
-    <input type="email" id="auth-email" class="input-base" placeholder="Email" style="width:100%; margin-bottom: 12px; box-sizing:border-box;">
-    <input type="password" id="auth-password" class="input-base" placeholder="Password" style="width:100%; margin-bottom: 24px; box-sizing:border-box;">
-    <div style="display: flex; gap: 12px; justify-content: center; margin-bottom: 16px;">
-      <button id="btn-login" class="btn" style="flex:1; background:#4d8fe7; color:white;">Login</button>
-      <button id="btn-register" class="btn" style="flex:1; background:#333; color:white;">Registrati</button>
-    </div>
-    <button id="btn-auth-cancel" class="btn" style="background:transparent; color:#888; width:100%;">Annulla</button>
-  </div>
-</div>
-
 </body></html>
