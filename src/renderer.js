@@ -185,11 +185,14 @@ function renderAll() {
       else if (isMega && n.includes('mewtwo') && n.includes('y')) n = 'mewtwo-megay';
       else if (isMega && !n.includes('-hero') && !n.includes('-blade')) n = n + '-mega';
 
-      return `src/assets/sprites/${n}.gif`;
+      return {
+        local: `src/assets/sprites/${n}.gif`,
+        showdown: `https://play.pokemonshowdown.com/sprites/gen5/${n}.png`
+      };
     };
 
     if (s.pokemon) {
-        const spriteUrl = getSpriteUrl(s.pokemon, s.isMega);
+        const spriteUrls = getSpriteUrl(s.pokemon, s.isMega);
         let name = s.pokemon;
         if(s.isMega && name === 'Palafin (Zero Form)') name = 'Palafin (Hero)';
         else if(s.isMega && name === 'Aegislash (Shield)') name = 'Aegislash (Blade)';
@@ -209,7 +212,7 @@ function renderAll() {
         if(natObj && natObj.up) natStr = `${s.nature} (+${natObj.up} -${natObj.down})`;
 
         return `<div class="slot-card ${act}" onclick="state.selSlotIdx=${i}; renderAll();" style="padding:6px; display:flex; align-items:center; gap:8px; cursor:pointer;">
-            <img src="${spriteUrl}" style="width:48px; height:48px; object-fit:contain; flex-shrink:0;" onerror="this.style.display='none'" />
+            <img src="${spriteUrls.local}" style="width:48px; height:48px; object-fit:contain; flex-shrink:0;" onerror="if(this.dataset.fallback!=='1'){this.dataset.fallback='1';this.src='${spriteUrls.showdown}';}else{this.style.display='none';}" />
             <div style="flex:1; display:flex; flex-direction:column; justify-content:center; overflow:hidden;">
               <div style="font-weight:bold; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; font-size:14px; margin-bottom:2px;">${name}</div>
               <div style="font-size:11px; color:#aaa; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; line-height:1.2;">
@@ -338,10 +341,17 @@ function renderSetup() {
       const dexUrl = `./assets/sprites/${aniUrl.split('/').pop().replace('.gif','.png')}`;
 
       imgBox.innerHTML = `
-        <div style="display:flex; flex-direction:column; align-items:center; justify-content:center; gap:10px; width:100%; height:100%; text-align:center;">
-          <img src="${aniUrl}" style="max-width:88%; max-height:120px; object-fit:contain; filter: drop-shadow(2px 4px 6px rgba(0,0,0,0.5));" onerror="this.onerror=null;this.src='${dexUrl}'" />
-          <div style="font-weight:700; font-size:18px; line-height:1.2;">${displayName}</div>
-          <div style="display:flex; gap:6px; flex-wrap:wrap; justify-content:center;">${tcs}</div>
+        <div style="display:flex; flex-direction:column; align-items:center; justify-content:space-between; width:100%; height:100%; text-align:center;">
+          <div style="flex:1; display:flex; align-items:center; justify-content:center; width:100%; padding:20px;">
+             <img src="${aniUrl}" style="max-width:90%; max-height:140px; image-rendering:pixelated; object-fit:contain; filter:drop-shadow(2px 4px 12px rgba(0,0,0,0.7)); transform:scale(1.15);" onerror="this.onerror=null;this.src='${dexUrl}'" />
+          </div>
+          <div style="width:100%; padding:20px 10px; margin-top:auto; position:relative;">
+            <div style="position:absolute; bottom:0; left:0; right:0; top:-20px; background:linear-gradient(to bottom, transparent, #080c13 30%); pointer-events:none;"></div>
+            <div style="position:relative; z-index:1;">
+              <div style="font-weight:800; font-size:18px; line-height:1.2; margin-bottom:8px; letter-spacing:0.02em;">${displayName}</div>
+              <div style="display:flex; gap:6px; flex-wrap:wrap; justify-content:center;">${tcs}</div>
+            </div>
+          </div>
         </div>`;
     }
   }
@@ -398,59 +408,187 @@ function renderMoves() {
   const learnset = form.learnset || (pokemonEntry ? pokemonEntry.learnset : []) || [];
 
   let validMoves = state.data.moves;
-
   if (learnset.length > 0) {
-      validMoves = validMoves.filter(m => {
-          const moveId = m.name.toLowerCase().replace(/[^a-z0-9]/g, '');
-          return learnset.includes(moveId);
-      });
+    validMoves = validMoves.filter(m => {
+      const moveId = m.name.toLowerCase().replace(/[^a-z0-9]/g, '');
+      return learnset.includes(moveId);
+    });
   }
 
-  const typeEmojis = {
-      Normal:'⚪', Fire:'🔥', Water:'💧', Electric:'⚡', Grass:'🌿', Ice:'❄️',
-      Fighting:'🥊', Poison:'☠️', Ground:'🟤', Flying:'🦅', Psychic:'👁️', Bug:'🐛',
-      Rock:'🪨', Ghost:'👻', Dragon:'🐉', Dark:'🌑', Steel:'⚙️', Fairy:'🧚'
+  const movesByType = [...new Set(validMoves.map(m => m.type))]
+    .sort()
+    .map(type => ({ type, moves: validMoves.filter(m => m.type === type).sort((a,b) => a.name.localeCompare(b.name)) }));
+
+  const catClass = category => {
+    if(category === 'Physical') return 'cat-physical';
+    if(category === 'Special') return 'cat-special';
+    return 'cat-status';
   };
-  const catEmojis = { Physical:'⚔️', Special:'🔮', Status:'🛡️' };
 
-  const types = [...new Set(validMoves.map(m=>m.type))].sort();
+  
+  const renderMoveButton = (moveIdx, choiceIdx, currentValue) => {
+    const cvLower = (currentValue || '').toLowerCase();
+    const selectedMove = validMoves.find(m => (m.name || '').toLowerCase() === cvLower);
+    const title = selectedMove ? selectedMove.name : 'Select Move';
 
-  document.getElementById('moves-grid').innerHTML = [1,2,3,4].map(moveIdx => 
-    `<div class="stat-card">
-      <div style="font-weight:bold; margin-bottom:8px;">Move ${moveIdx}</div>
-      <div style="display:flex; flex-direction:column; gap:8px;">
+    const type = selectedMove ? selectedMove.type : null;
+    const category = selectedMove ? selectedMove.category : null;
+    const power = selectedMove && selectedMove.power ? selectedMove.power : '—';
+    const accuracy = selectedMove && selectedMove.accuracy ? selectedMove.accuracy : '—';
+    const contact = selectedMove ? (selectedMove.contact ? 'Contact' : 'No Contact') : '';
+    const desc = selectedMove ? (selectedMove.desc || 'No description.') : 'Choose a move from the Pokémon Champions learnset.';
+
+    return `<button type="button" class="move-picker-btn ${selectedMove ? 'has-value' : ''}" onclick="openMovePicker(${moveIdx}, ${choiceIdx})">
+      <div class="move-picker-top">
+        <span class="move-picker-name">${title}</span>
+        ${type ? `<span class="tc" style="background:${TYPE_COLORS[type] || '#64748b'}">${type}</span>` : `<span class="move-picker-placeholder">Pick</span>`}
+      </div>
+      <div class="move-picker-meta">
+        ${category ? `<span class="cat-badge ${catClass(category)}">${category}</span>` : ''}
+        ${selectedMove ? `<span class="move-mini-stat">BP ${power}</span><span class="move-mini-stat">ACC ${accuracy}</span><span class="move-mini-stat">${contact}</span>` : ''}
+      </div>
+      <div class="move-picker-desc">${desc}</div>
+    </button>`;
+  };
+
+  document.getElementById('moves-grid').innerHTML = [1,2,3,4].map(moveIdx => `
+    <div class="move-slot-card">
+      <div class="move-slot-header">Move ${moveIdx}</div>
+      <div class="move-choice-stack">
         ${['A','B'].map((choice, i) => {
           const v = s.moves[moveIdx-1][i];
-          return `<div style="display:flex; gap:8px; align-items:center;">
-            <div style="width:15px;">${choice}:</div>
-            <select style="flex:1; padding:4px;" title="Hover a move to read its effect" onchange="updateMove(${moveIdx-1}, ${i}, this.value)">
-              <option value="">Select Move...</option>
-              ${types.map(t => {
-                const ms = validMoves.filter(m=>m.type===t);
-                if(!ms.length) return '';
-                const emoji = typeEmojis[t] || '';
-                return `<optgroup label="${emoji} ${t} Type">
-                  ${ms.map(m => {
-                      const cEmoji = catEmojis[m.category] || '';
-                      const pow = m.power ? `P:${m.power}` : '-';
-                      const acc = m.accuracy ? `Acc:${m.accuracy}` : '-';
-                      const cont = m.contact ? '(Contact)' : '';
-                      const titleStr = `${m.desc || 'No description'}\nCategory: ${m.category} | BP: ${pow} | Acc: ${acc} | ${m.contact ? 'Makes Contact' : 'No Contact'}`;
-
-                      // Using HTML entities to render emojis correctly inside options if needed
-                      return `<option value="${m.name}" ${v===m.name?'selected':''} title="${titleStr}">
-                          ${cEmoji} ${m.name} — ${m.category} | ${pow} | ${acc} ${cont}
-                      </option>`;
-                  }).join('')}
-                </optgroup>`;
-              }).join('')}
-            </select>
+          return `<div class="move-choice-row">
+            <div class="move-choice-label">${choice}</div>
+            ${renderMoveButton(moveIdx - 1, i, v)}
           </div>`;
         }).join('')}
       </div>
-    </div>`
-  ).join('');
+    </div>
+  `).join('');
+
+  let picker = document.getElementById('move-picker-popover');
+  if(!picker) {
+    picker = document.createElement('div');
+    picker.id = 'move-picker-popover';
+    picker.className = 'move-picker-popover hidden';
+    document.body.appendChild(picker);
+  }
+
+  window.__movePickerData = { validMoves, movesByType };
 }
+
+window.openMovePicker = (moveIdx, choiceIdx) => {
+  const picker = document.getElementById('move-picker-popover');
+  const { movesByType } = window.__movePickerData || { movesByType: [] };
+  if(!picker) return;
+
+  const catClass = category => {
+    if(category === 'Physical') return 'cat-physical';
+    if(category === 'Special') return 'cat-special';
+    return 'cat-status';
+  };
+
+  picker.innerHTML = `
+    <div class="move-picker-dialog">
+      <div class="move-picker-toolbar">
+        <input id="move-picker-search" class="move-picker-search" placeholder="Search move..." />
+        <button type="button" class="move-picker-close" onclick="closeMovePicker()">✕</button>
+      </div>
+      <div id="move-picker-results" class="move-picker-results"></div>
+    </div>
+  `;
+
+  const renderResults = (query = '') => {
+    const q = query.trim().toLowerCase();
+    document.getElementById('move-picker-results').innerHTML = movesByType.map(group => {
+      const filtered = group.moves.filter(m => !q || m.name.toLowerCase().includes(q) || m.category.toLowerCase().includes(q) || group.type.toLowerCase().includes(q));
+      if(!filtered.length) return '';
+      return `
+        <div class="move-type-group">
+          <div class="move-type-header">
+            <span class="tc" style="background:${TYPE_COLORS[group.type] || '#64748b'}">${group.type}</span>
+            <span class="move-type-count">${filtered.length} moves</span>
+          </div>
+          <div class="move-option-list">
+            ${filtered.map(m => {
+              const power = m.power ? m.power : '—';
+              const accuracy = m.accuracy ? m.accuracy : '—';
+              return `
+                <button type="button" class="move-option" data-move-name="${m.name.replace(/"/g, '&quot;')}">
+                  <div class="move-option-main">
+                    <div class="move-option-name-row">
+                      <span class="move-option-name">${m.name}</span>
+                      <span class="cat-badge ${catClass(m.category)}">${m.category}</span>
+                    </div>
+                    <div class="move-option-stats">
+                      <span class="move-mini-stat">BP ${power}</span>
+                      <span class="move-mini-stat">ACC ${accuracy}</span>
+                      <span class="move-mini-stat">${m.contact ? 'Contact' : 'No Contact'}</span>
+                    </div>
+                  </div>
+                  <div class="move-option-desc">${m.desc || 'No description.'}</div>
+                </button>
+              `;
+            }).join('')}
+          </div>
+        </div>
+      `;
+    }).join('') || `<div class="move-empty-state">No moves found.</div>`;
+  };
+
+  const bindMoveOptionEvents = () => {
+    document.querySelectorAll('.move-option').forEach(btn => {
+      // remove old listeners if any (by replacing node, or just add since we rebuild HTML)
+      btn.addEventListener('click', async () => {
+        const moveName = btn.getAttribute('data-move-name').replace(/&quot;/g, '"');
+        const s = getSlot();
+        if (s) {
+          if (!s.moves) s.moves = [['',''],['',''],['',''],['','']];
+          s.moves[moveIdx][choiceIdx] = moveName;
+          await persist();
+        }
+        closeMovePicker();
+        renderMoves();
+      });
+    });
+  };
+
+  picker.classList.remove('hidden');
+  renderResults();
+  bindMoveOptionEvents();
+
+  const search = document.getElementById('move-picker-search');
+  search.addEventListener('input', e => {
+    renderResults(e.target.value);
+    bindMoveOptionEvents();
+  });
+  search.focus();
+};
+
+window.closeMovePicker = () => {
+  const picker = document.getElementById('move-picker-popover');
+  if(picker) picker.classList.add('hidden');
+};
+
+window.selectMoveFromPicker = async (moveIdx, choiceIdx, moveName) => {
+  try {
+    const s = getSlot();
+    if (s) {
+      if (!s.moves) s.moves = [['',''],['',''],['',''],['','']];
+      s.moves[moveIdx][choiceIdx] = moveName;
+
+      // Update stats and recalculate SP if necessary (though moves rarely affect it unless it triggers a sync)
+      await persist();
+    }
+    closeMovePicker();
+    renderMoves();
+    // Anche se re-renderizza renderMoves, la griglia potrebbe aver bisogno di essere forzata
+    console.log("Move updated successfully", moveIdx, choiceIdx, moveName);
+  } catch(e) {
+    console.error("Error setting move:", e);
+  }
+};
+
 function renderStats() {
   const s = getSlot(); const f = getActiveForm(); const g = $('#stats-grid');
   if(!s||!f) { g.innerHTML=''; $('#sp-budget').textContent = 'SP: 0/66 (Max 32 per stat)'; return; }
@@ -471,13 +609,18 @@ function renderStats() {
         statVal = Math.floor((base + sp) * mod);
     }
     let color = pctToColor(base/250);
+        let modClass = '';
+    if(st !== 'HP') {
+        if(nat.up === st) modClass = 'stat-up';
+        if(nat.down === st) modClass = 'stat-down';
+    }
     return `<div class="stat-card">
-      <div class="stat-row"><b>${st}</b> <span id="stat-val-${st}" style="font-size:18px;">${statVal}</span></div>
-      <div class="stat-bar"><div class="stat-fill" style="width:${Math.min(100, (base/250)*100)}%; background:${color}"></div></div>
-      <div class="stat-row hint" style="margin-bottom:8px;"><span>Base ${base}</span> <span id="stat-sp-${st}">SP ${sp}</span></div>
-      <div style="display:flex; align-items:center; gap:8px;">
-        <input id="stat-num-${st}" type="number" min="0" max="32" value="${sp}" style="width:50px; padding:4px;" oninput="updateSpInput('${st}', this.value)" />
-        <input id="stat-range-${st}" type="range" min="0" max="32" step="1" value="${sp}" style="flex:1;" oninput="updateSpInput('${st}', this.value)" />
+      <div class="stat-row"><b style="font-size:14px;color:#94a3b8;">${st}</b> <span id="stat-val-${st}" class="${modClass}" style="font-size:22px;font-weight:900;">${statVal}</span></div>
+      <div class="stat-bar" style="margin:4px 0;"><div class="stat-fill" style="width:${Math.min(100, (base/250)*100)}%; background:${color}"></div></div>
+      <div class="stat-row hint" style="margin-bottom:4px; font-size:11px; color:#64748b;"><span>Base ${base}</span> <span id="stat-sp-${st}" style="color:#e2e8f0; font-weight:700;">SP ${sp}</span></div>
+      <div style="display:flex; align-items:center; gap:12px; margin-top:4px;">
+        <input id="stat-num-${st}" type="number" min="0" max="32" value="${sp}" style="width:48px; height:28px;" oninput="updateSpInput('${st}', this.value)" />
+        <input id="stat-range-${st}" type="range" min="0" max="32" step="1" value="${sp}" oninput="updateSpInput('${st}', this.value)" />
       </div>
     </div>`;
   }).join('');
@@ -503,7 +646,14 @@ function updateStatsDOM() {
     }
 
     const valEl = document.getElementById(`stat-val-${st}`);
-    if(valEl) valEl.textContent = statVal;
+    if(valEl) {
+      valEl.textContent = statVal;
+      valEl.className = '';
+      if(st !== 'HP') {
+        if(nat.up === st) valEl.classList.add('stat-up');
+        if(nat.down === st) valEl.classList.add('stat-down');
+      }
+    }
     const spEl = document.getElementById(`stat-sp-${st}`);
     if(spEl) spEl.textContent = `SP ${sp}`;
 
