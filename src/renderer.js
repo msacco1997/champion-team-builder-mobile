@@ -60,10 +60,17 @@ async function init() {
 }
 
 async function persist() {
-  localStorage.setItem('teams', JSON.stringify(state.teams));
   if (currentUser && supabase) {
     if (state.cloudRecordId) {
       await supabase.from('teams').update({ team_data: state.teams }).eq('id', state.cloudRecordId);
+    } else {
+      const { data, error } = await supabase.from('teams').insert({ user_id: currentUser.id, team_data: state.teams }).select().single();
+      if (data) state.cloudRecordId = data.id;
+    }
+  } else {
+    localStorage.setItem('teams', JSON.stringify(state.teams));
+  }
+}).eq('id', state.cloudRecordId);
     } else {
       const { data, error } = await supabase.from('teams').insert({ user_id: currentUser.id, team_data: state.teams }).select().single();
       if (data) state.cloudRecordId = data.id;
