@@ -4,109 +4,97 @@
 <div class="app-shell">
   <aside class="sidebar card">
     <div class="card-header">
-      <div style="display:flex; justify-content:space-between; align-items:center; width:100%;"><h2>Teams</h2><button id="auth-status" class="btn" style="font-size:12px; padding:4px 8px; border-radius:4px; height:auto;">Login Cloud</button></div>
-      <div class="team-actions">
-        <button id="btn-new" class="btn">Create New</button>
-        <button id="btn-save" class="btn btn-primary">Save</button>
-      </div>
-      <div class="team-actions" style="margin-top:8px;">
-        <button id="btn-import" class="btn" style="background:#2ecc71; color:#000;">Import</button>
-        <button id="btn-export" class="btn" style="background:#3498db; color:#000;">Export</button>
-        <button id="btn-delete" class="btn" style="background:#e74c3c; color:#fff;">Delete</button>
-        <input type="file" id="file-import" accept=".json" style="display:none;">
-      </div>
-      <div style="margin-top:12px;">
-        <select id="team-select" class="input-base" style="width:100%;"></select>
-      </div>
+      <h2>Teams</h2><span class="status-msg" id="team-status">Ready</span>
     </div>
-    
-    <div class="sidebar-section">
-      <h3 class="section-title">Team Slots</h3>
-      <div style="font-size:12px; color:#888; margin-bottom:8px;" id="current-team-name">No team</div>
-      <div id="slots-grid" style="display:flex; flex-direction:column; gap:8px;"></div>
+    <div class="actions" style="display: flex; flex-direction: column; gap: 8px;">
+      <div style="display: flex; gap: 8px; width: 100%;">
+        <button id="btn-new" style="flex: 1;">Create New</button>
+        <button id="btn-save" class="primary" style="flex: 1;">Save</button>
+      </div>
+      <div style="display: flex; gap: 8px; width: 100%;">
+        <button id="btn-import" style="flex: 1; background:#2ecc71; color:white; border:none; padding:8px; border-radius:4px; cursor:pointer; font-weight:bold;">Import</button>
+        <button id="btn-export" style="flex: 1; background:#3498db; color:white; border:none; padding:8px; border-radius:4px; cursor:pointer; font-weight:bold;">Export</button>
+        <button id="btn-delete" class="danger" style="flex: 1;">Delete</button>
+      </div>
+      <input type="file" id="file-import" accept=".json" style="display:none;">
     </div>
-  </aside>
+    <select id="team-select" size="8" class="team-list"></select>
+    <div class="card-header" style="margin-top:20px;">
+      <h2>Team Slots</h2><span class="status-msg" id="current-team-name">No team</span>
+    </div>
+    <div id="slots-grid" class="slots-grid" style="display: flex; flex-direction: column; gap: 10px;"></div>
+  
+    <div style="margin-top: auto; padding-top: 16px;">
+      <button id="auth-status" style="width: 100%; padding: 10px; background: rgba(77, 143, 231, 0.1); color: #4d8fe7; border: 1px solid #4d8fe7; border-radius: 4px; cursor: pointer; font-weight: bold;">Login Cloud</button>
+    </div>
+</aside>
 
-  <main class="main-content card">
-    <header class="main-header">
-      <h2>Pokémon Editor</h2>
-      <div style="font-size:13px; color:#888;">Select a slot</div>
-    </header>
-
-    <div class="editor-grid">
+  <main class="main-panel card">
+    <div class="editor-header">
+      <h2>Pokémon Editor</h2><span id="editor-status" class="status-msg">Select a slot</span>
+    </div>
+    <div class="editor-layout">
       <div class="sprite-panel">
-        <button id="btn-mega" class="btn hidden" style="width:100%; margin-bottom:16px; background:#a855f7; color:white; border-color:#9333ea;">Mega Evolution</button>
-        <div class="sprite-box">
-          <img id="pokemon-sprite" src="" alt="Sprite" style="display:none;" />
-          <div id="sprite-fallback">No Pokémon selected</div>
-        </div>
-        <div id="pokemon-name-display" style="text-align:center; font-weight:bold; font-size:18px; margin-top:16px;"></div>
-        <div id="pokemon-types-display" style="display:flex; gap:8px; justify-content:center; margin-top:8px;"></div>
+        <button id="mega-toggle" class="mega-toggle hidden">Mega Evolution</button>
+        <div id="sprite-box" class="sprite-box">No Pokémon selected</div>
       </div>
-
-      <div class="details-panel">
-        <div class="input-group">
-          <label>Pokémon</label>
-          <div style="position:relative;">
-            <input type="text" id="search-pokemon" class="input-base" placeholder="Search Pokémon..." autocomplete="off">
-            <div id="pokemon-dropdown" class="dropdown-list hidden"></div>
+      <div class="form-panel">
+        <div class="row-2">
+          <div class="field-group">
+            <label>Pokémon</label>
+            <input type="text" id="poke-search" placeholder="Search Pokémon..." oninput="filterPokeList(this.value)" style="margin-bottom:5px;">
+            <div id="pokemon-list" class="picker-list"></div>
+          </div>
+          <div class="field-group">
+            <label>Item</label>
+            <div id="item-list" class="picker-list"></div>
+            <p id="item-desc" class="hint"></p>
           </div>
         </div>
-
-        <div class="input-group">
-          <label>Item</label>
-          <div style="position:relative;">
-            <input type="text" id="search-item" class="input-base" placeholder="Search Item..." autocomplete="off">
-            <div id="item-dropdown" class="dropdown-list hidden"></div>
+        <div class="row-2" style="margin-top:15px;">
+          <div class="field-group">
+            <label>Ability</label>
+            <select id="ability-select"></select>
+            <div id="ability-desc-card" style="margin-top:8px; padding:8px 12px; background:rgba(0,0,0,0.3); border:1px solid rgba(255,255,255,0.1); border-radius:6px; font-size:11.5px; color:#ddd; font-style:italic; line-height:1.4; display:flex; align-items:center; gap:8px; min-height:36px;">
+        <span style="font-size:14px; opacity:0.8;">💡</span>
+        <span id="ability-desc-text">Select an ability to see its effect.</span>
+    </div>
           </div>
-          <div id="item-desc" class="desc-text" style="margin-top:4px;"></div>
-        </div>
-
-        <div class="input-group">
-          <label>Ability</label>
-          <select id="sel-ability" class="input-base"></select>
-          <div id="ability-desc" class="desc-text tooltip-box" style="margin-top:4px;">💡 Select an ability to see its effect.</div>
-        </div>
-
-        <div class="input-group">
-          <label>Nature</label>
-          <select id="sel-nature" class="input-base"></select>
+          <div class="field-group">
+            <label>Nature</label>
+            <select id="nature-select"></select>
+          </div>
         </div>
       </div>
     </div>
-
-    <div style="display:grid; grid-template-columns:1fr 1fr; gap:24px; margin-top:32px;">
-      <div>
-        <h3 class="section-title">Moves <span style="font-size:12px; font-weight:normal; color:#888;">(4 slots, 2 choices each)</span></h3>
+    <div class="moves-stats-layout">
+      <div class="moves-section">
+        <h3>Moves <span class="hint">(4 slots, 2 choices each)</span></h3>
         <div id="moves-grid" class="moves-grid"></div>
       </div>
-      
-      <div>
-        <div style="display:flex; justify-content:space-between; align-items:center;">
-          <h3 class="section-title">Stats</h3>
-          <div id="sp-counter" style="font-size:12px; color:#888;">SP: 0/66 (Max 32 per stat)</div>
+      <div class="stats-section">
+        <div class="card-header">
+            <h3>Stats</h3>
+            <span class="hint" id="sp-budget">SP: 0/66 (Max 32 per stat)</span>
         </div>
         <div id="stats-grid" class="stats-grid"></div>
       </div>
     </div>
 
-    <div style="margin-top:32px;">
-      <h3 class="section-title">Defensive Profile <span style="font-size:12px; font-weight:normal; color:#888;">(Weaknesses, Resistances, Immunities)</span></h3>
-      <div id="defensive-profile" style="background:var(--surface-color); border:1px solid var(--border-color); border-radius:8px; padding:16px; min-height:60px;"></div>
+    <div style="grid-column: 1 / -1; margin-top: 20px;">
+        <h3>Defensive Profile <span class="hint">(Weaknesses, Resistances, Immunities)</span></h3>
+        <div id="defensive-profile" class="stat-card" style="padding: 15px;">
+            <!-- Will be populated by JS -->
+        </div>
     </div>
+
   </main>
 </div>
-
 <div id="modal-backdrop" class="modal-backdrop hidden">
-  <div class="modal-content card" style="max-width: 400px;">
+  <div class="modal card">
     <h3>Create New Team</h3>
-    <div style="margin-top:16px;">
-      <input type="text" id="team-name-input" class="input-base" placeholder="Team name" style="width:100%;">
-    </div>
-    <div style="display:flex; justify-content:flex-end; gap:12px; margin-top:24px;">
-      <button id="modal-cancel" class="btn">Cancel</button>
-      <button id="modal-confirm" class="btn btn-primary">Confirm</button>
-    </div>
+    <input id="team-name-input" type="text" maxlength="40" placeholder="Team name" />
+    <div class="modal-actions"><button id="modal-cancel">Cancel</button><button id="modal-confirm" class="primary">Confirm</button></div>
   </div>
 </div>
 <script src="src/renderer.js"></script>
@@ -117,13 +105,13 @@
     <p style="font-size: 14px; color: #888; margin-bottom: 24px;">
       Accedi per salvare i team sul cloud, o clicca fuori per continuare come Guest (salvataggio locale).
     </p>
-    <input type="email" id="auth-email" class="input-base" placeholder="Email" style="width:100%; margin-bottom: 12px; box-sizing:border-box;">
-    <input type="password" id="auth-password" class="input-base" placeholder="Password" style="width:100%; margin-bottom: 24px; box-sizing:border-box;">
+    <input type="email" id="auth-email" placeholder="Email" style="width:100%; margin-bottom: 12px; box-sizing:border-box; padding: 8px; border-radius: 4px; border: 1px solid #444; background: #222; color: #fff;">
+    <input type="password" id="auth-password" placeholder="Password" style="width:100%; margin-bottom: 24px; box-sizing:border-box; padding: 8px; border-radius: 4px; border: 1px solid #444; background: #222; color: #fff;">
     <div style="display: flex; gap: 12px; justify-content: center; margin-bottom: 16px;">
-      <button id="btn-login" class="btn" style="flex:1; background:#4d8fe7; color:white;">Login</button>
-      <button id="btn-register" class="btn" style="flex:1; background:#333; color:white;">Registrati</button>
+      <button id="btn-login" style="flex:1; background:#4d8fe7; color:white; border:none; padding:10px; border-radius:4px; cursor:pointer;">Login</button>
+      <button id="btn-register" style="flex:1; background:#333; color:white; border:none; padding:10px; border-radius:4px; cursor:pointer;">Registrati</button>
     </div>
-    <button id="btn-auth-cancel" class="btn" style="background:transparent; color:#888; width:100%;">Annulla</button>
+    <button id="btn-auth-cancel" style="background:transparent; color:#888; width:100%; border:none; cursor:pointer;">Annulla</button>
   </div>
 </div>
 
